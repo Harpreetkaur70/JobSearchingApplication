@@ -28,8 +28,33 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.jobTableView.dataSource = self;
         self.jobTableView.delegate = self;
         
+         self.searchField.addTarget(self, action: #selector(searchJob), for: .editingChanged);
+        
         self.getJobList();
       
+    }
+    
+        @objc func  searchJob(sender : UITextField) {
+        
+        self.filterJobArray.removeAll();
+        let serachData : Int = self.searchField.text!.count;
+        if(serachData != 0) {
+            self.searching = true;
+            for item in self.jobArray {
+                if let itemToSearch = self.searchField.text {
+                    let range = item.title.lowercased().range(of: itemToSearch, options: .caseInsensitive, range: nil, locale: nil);
+                    if(range != nil) {
+                        self.filterJobArray.append(item);
+                    }
+                }
+             }
+        } else {
+            self.filterJobArray = self.jobArray;
+            self.searching = false;
+        }
+        self.jobTableView.reloadData();
+        
+        
     }
     
     func getJobList()  {
