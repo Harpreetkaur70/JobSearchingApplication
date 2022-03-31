@@ -49,5 +49,32 @@ class DatabaseHelper {
         }
         return result;
     }
+    
+     
+    func saveJob(object : [String:String]) {
+        let job = NSEntityDescription.insertNewObject(forEntityName: "Jobs", into: context!) as! Jobs;
+        
+        job.title = object["title"];
+        job.name = object["name"];
+        job.slug = object["slug"];
+        job.desc = object["desc"];
+        do {
+            try context?.save();
+        }catch {
+            print("data not saved");
+        }
+    }
+    
+    func getJobs() -> [Jobs] {
+        var jobsArray = [Jobs]();
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Jobs");
+        do{
+            jobsArray = try context?.fetch(fetchRequest) as! [Jobs];
+            
+        } catch {
+            print("no user");
+        }
+        return jobsArray;
+    }
 }
 
