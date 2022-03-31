@@ -21,17 +21,50 @@ class RegisterViewController: UIViewController {
     }
 
     @IBAction func registerBtnAction(_ sender: Any) {
-       
-        
+         if(userNameField.text == "") {
+            self.showAlert(message1: "Please enter username", key: "");
+        } else if(passwordField.text == "") {
+            self.showAlert(message1: "Please enter username", key: "");
+        } else if(phoneField.text == "") {
+            self.showAlert(message1: "Please enter mobile number", key: "");
+        } else {
+           
+        }
     }
-    
-    @IBAction func editBtnAction(_ sender: Any) {
-    }
+  
     
     @IBAction func backBtnAction(_ sender: Any) {
-       
+        if let nav = self.navigationController {
+                    nav.popViewController(animated: true)
+                } else {
+                    self.dismiss(animated: true, completion: nil)
+                }
     }
     
+     func showAlert(message1 : String, key : String) {
+        
+        let alert = UIAlertController(title: "Alert", message: message1, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            switch action.style{
+                case .default:
+                    if(key == "exit") {
+                        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                        let vc = storyBoard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+                        vc.modalPresentationStyle = .fullScreen
+                        self.present(vc, animated:true, completion:nil)
+                    }
+                    
+                
+                case .cancel:
+                print("cancel")
+                
+                case .destructive:
+                print("destructive")
+                
+            }
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
    
 }
 
