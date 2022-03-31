@@ -33,7 +33,13 @@ class LoginViewController: UIViewController {
         } else if(self.passwordField.text == "" ){
             self.showAlert(message1: "Please enter password", key: "");
         } else {
-            
+             let user = DatabaseHelper.shareInstance.getUser(userName: self.userNameField.text!, pass: passwordField.text!);
+            if(user) {
+                UserDefaults.standard.setValue(self.userNameField.text!, forKey: "userName");
+                self.showAlert(message1: "Login Successfully", key: "exit");
+            } else {
+                self.showAlert(message1: "Invalid User Name & Password", key: "");
+            }
         }
 
     }
