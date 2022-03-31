@@ -27,7 +27,44 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         self.jobTableView.dataSource = self;
         self.jobTableView.delegate = self;
+        
+        self.getJobList();
       
+    }
+    
+    func getJobList()  {
+        self.showSpinner();
+        let url = "https://www.arbeitnow.com/api/job-board-api";
+        var request = URLRequest(url: NSURL(string: url)! as URL)
+        request.httpMethod = "GET"
+        request.timeoutInterval = 30.0
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+ 
+        AF.request(url, method: .get).responseJSON{ (myresponse) in
+            
+            switch myresponse.result{
+           
+            case .success:
+                self.hideSpinner();
+                let myresult = try? JSON(data: myresponse.data!);
+                let respnseArray = myresult!["data"];
+                if(respnseArray.count > 0) {
+                    for i in respnseArray.arrayValue{
+                        let jobModel = JobModel(slug: i["slug"].stringValue, companyName: i["company_name"].stringValue, title: i["title"].stringValue, description: i["description"].stringValue, remote: i["remote"].stringValue, url: i["url"].stringValue, location: i["location"].stringValue, createdAt: i["created_at"].stringValue)
+                        self.jobArray.append(jobModel)
+                       }
+                    self.filterJobArray = self.jobArray;
+                    
+                    self.jobTableView.reloadData();
+                }
+                break;
+                
+            case .failure:
+                self.hideSpinner();
+                print("failu");
+                break;
+            }
+        }
     }
     
 
@@ -60,14 +97,23 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        
+         let cell = tableView.dequeueReusableCell(withIdentifier: "JobTableViewCell", for: indexPath) as! JobTableViewCell
+        cell.selectionStyle = .none
+        let rowData = self.filterJobArray[indexPath.row];
+        cell.titleLabel.text = rowData.title;
+        cell.nameLabel.text = rowData.companyName + ", " + rowData.location;
+        cell.slugLabel.text = rowData.slug;
         return cell
         
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-       
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let vc = storyBoard.instantiateViewController(withIdentifier: "JobDetailViewController") as! JobDetailViewController
+        vc.modalPresentationStyle = .fullScreen
+        vc.jobModel = self.filterJobArray[indexPath.row];
+        self.present(vc, animated:true, completion:nil)
     }
     
    
