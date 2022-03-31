@@ -1,0 +1,6 @@
+framework module Pods_JobApp_JobAppUITests {
+  umbrella header "Pods-JobApp-JobAppUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
