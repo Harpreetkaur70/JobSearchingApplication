@@ -7,7 +7,7 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 
-class HomeViewController: UIViewController {
+class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
     @IBOutlet weak var searchField: UITextField!
@@ -21,7 +21,12 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-       
+        self.jobTableView.separatorStyle = UITableViewCell.SeparatorStyle.none;
+        let cellNib = UINib.init(nibName: "JobTableViewCell", bundle: Bundle.main)
+        self.jobTableView.register(cellNib, forCellReuseIdentifier: "JobTableViewCell")
+        
+        self.jobTableView.dataSource = self;
+        self.jobTableView.delegate = self;
       
     }
     
@@ -34,6 +39,35 @@ class HomeViewController: UIViewController {
   
     @IBAction func listBtnAction(_ sender: Any) {
       
+    }
+    
+    // MARK:- --------- UITableView Delegates and Datasource ---------
+    func numberOfSections(in tableView: UITableView) -> Int
+    {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+        return 150;
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        return self.filterJobArray.count;
+        
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    {
+        
+        return cell
+        
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
+       
     }
     
    
