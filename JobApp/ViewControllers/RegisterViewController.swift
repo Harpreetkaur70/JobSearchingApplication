@@ -28,12 +28,11 @@ class RegisterViewController: UIViewController {
         } else if(phoneField.text == "") {
             self.showAlert(message1: "Please enter mobile number", key: "");
         } else {
-            
+             let dict = ["userName":userNameField.text,"password":passwordField.text,"mobile":phoneField.text];
+            DatabaseHelper.shareInstance.save(object: dict as! [String:String]);
+            self.showAlert(message1: "Register Successfully", key: "exit");
         }
         
-    }
-    
-    @IBAction func editBtnAction(_ sender: Any) {
     }
     
     @IBAction func backBtnAction(_ sender: Any) {
