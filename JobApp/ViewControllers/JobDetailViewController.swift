@@ -30,7 +30,34 @@ class JobDetailViewController: UIViewController {
     }
     
     @IBAction func applyBtnAction(_ sender: Any) {
-       
+       let dict = ["title":self.titleLbl.text,"name":self.nameLbl.text,"slug":self.slugLbl.text,"desc":self.descriptionLbl.text];
+        DatabaseHelper.shareInstance.saveJob(object: dict as! [String:String]);
+        self.showAlert(message1: "Successfully apply for this job", key: "");
+    }
+    
+      func showAlert(message1 : String, key : String) {
+        
+        let alert = UIAlertController(title: "Alert", message: message1, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            switch action.style{
+                case .default:
+                    if(key == "exit") {
+                        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                        let vc = storyBoard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+                        vc.modalPresentationStyle = .fullScreen
+                        self.present(vc, animated:true, completion:nil)
+                    }
+                    
+                
+                case .cancel:
+                print("cancel")
+                
+                case .destructive:
+                print("destructive")
+                
+            }
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func backBtnAction(_ sender: Any) {
@@ -40,6 +67,8 @@ class JobDetailViewController: UIViewController {
                     self.dismiss(animated: true, completion: nil)
                 }
     }
+    
+    
     
    
 }
