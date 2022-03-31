@@ -6,6 +6,8 @@ target 'JobApp' do
   use_frameworks!
 
   # Pods for JobApp
+  pod 'Alamofire'
+  pod 'SwiftyJSON'
 
   target 'JobAppTests' do
     inherit! :search_paths
