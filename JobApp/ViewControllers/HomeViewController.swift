@@ -95,12 +95,19 @@ class HomeViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 
     @IBAction func logoutBtn(_ sender: Any) {
-      
+       UserDefaults.standard.setValue(nil, forKey: "userName");
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let vc = storyBoard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated:true, completion:nil)
     }
     
   
     @IBAction func listBtnAction(_ sender: Any) {
-      
+       let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let vc = storyBoard.instantiateViewController(withIdentifier: "AppliedJobViewController") as! AppliedJobViewController
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated:true, completion:nil)
     }
     
     // MARK:- --------- UITableView Delegates and Datasource ---------
